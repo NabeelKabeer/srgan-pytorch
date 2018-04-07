@@ -83,32 +83,32 @@ class D_Net(nn.Module):
 	    nn.LeakyReLU(0.2,inplace=True),
 
 	    # 64 x 96 x 96
-	    nn.Conv2d(in_channels=64,out_channels=128,kernel_size=3,stride=2,padding=1,bias=False),
+	    nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=2,padding=1,bias=False),
+	    nn.BatchNorm2d(64),
+	    nn.LeakyReLU(0.2,inplace=True),
+
+	    #64 x 96 x 96
+	    nn.Conv2d(in_channels=64,out_channels=128,kernel_size=3,stride=1,padding=1,bias=False),
 	    nn.BatchNorm2d(128),
 	    nn.LeakyReLU(0.2,inplace=True),
 
 	    # 128 x 48 x 48
-	    nn.Conv2d(in_channels=128,out_channels=128,kernel_size=3,stride=1,padding=1,bias=False),
+	    nn.Conv2d(in_channels=128,out_channels=128,kernel_size=3,stride=2,padding=1,bias=False),
 	    nn.BatchNorm2d(128),
 	    nn.LeakyReLU(0.2,inplace=True),
 
 	    # 128 x 48 x 48
-	    nn.Conv2d(in_channels=128,out_channels=256,kernel_size=3,stride=2,padding=1,bias=False),
-	    nn.BatchNorm2d(128),
-	    nn.LeakyReLU(0.2,inplace=True),
-
-	    #256 x 24 x 24
-	    nn.Conv2d(in_channels=256,out_channels=256,kernel_size=3,stride=1,padding=1,bias=False),
+	    nn.Conv2d(in_channels=128,out_channels=256,kernel_size=3,stride=1,padding=1,bias=False),
 	    nn.BatchNorm2d(256),
 	    nn.LeakyReLU(0.2,inplace=True),
 
 	    #256 x 24 x 24
-	    nn.Conv2d(in_channels=256,out_channels=512,kernel_size=3,stride=2,padding=1,bias=False),
-	    nn.BatchNorm2d(512),
+	    nn.Conv2d(in_channels=256,out_channels=256,kernel_size=3,stride=2,padding=1,bias=False),
+	    nn.BatchNorm2d(256),
 	    nn.LeakyReLU(0.2,inplace=True),
 
-	    #512 x 12 x 12
-	    nn.Conv2d(in_channels=512,out_channels=512,kernel_size=3,stride=1,padding=1,bias=False),
+	    #256 x 24 x 24
+	    nn.Conv2d(in_channels=256,out_channels=512,kernel_size=3,stride=1,padding=1,bias=False),
 	    nn.BatchNorm2d(512),
 	    nn.LeakyReLU(0.2,inplace=True),
 
@@ -116,6 +116,7 @@ class D_Net(nn.Module):
 	    nn.Conv2d(in_channels=512,out_channels=512,kernel_size=3,stride=2,padding=1,bias=False),
 	    nn.BatchNorm2d(512),
 	    nn.LeakyReLU(0.2,inplace=True),
+
         )
 
 	self.fc1 = nn.Linear(512 * 6 * 6,1024)
@@ -125,14 +126,15 @@ class D_Net(nn.Module):
 
 
     def forward(self,x):
-	out = features(x)
+	out = self.features(x)
 
 	out = out.view(out.size(0),-1)
 
 	out = self.fc1(out)
 
-	out = nn.Leaky(out)
+	out = self.Leaky(out)
 
 	out = self.fc2(out)
 
-	return self.sigmoid(out)
+	out =  self.sigmoid(out)
+	return out.view(-1,1).squeeze(1)
