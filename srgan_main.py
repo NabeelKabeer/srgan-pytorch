@@ -76,7 +76,7 @@ def main():
 	        print ">>>Loading Checkpoint '{}'".format(opt.resumeG)
 	        checkpoint = torch.load(opt.resumeG)
 	        opt.startEpoch = checkpoint['epoch'] + 1
-	        modelG.load_state_dict(checkpoint['model'].state_dict())
+	        model_G.load_state_dict(checkpoint['model'].state_dict())
 
 	    else:
 	        print '>>>No model found at : ' + opt.resume
@@ -85,7 +85,7 @@ def main():
 	    if os.path.isfile(opt.resumeD):
         	print '>>>Loading Checkpoint "{}"'.format(opt.resumeD)
 		checkpoint = torch.load(opt.resumeD)
-		modelD.load_state_dict(checkpoint['model'].state_dict())
+		model_D.load_state_dict(checkpoint['model'].state_dict())
 
 
     print '>>Setting Optimizer'
@@ -94,8 +94,8 @@ def main():
 
     for epoch in range(opt.startEpoch,opt.numEpochs+1):
 	    current_loss = train(training_data_loader,optimizer_D,optimizer_G,model_G,model_D,criterion,gan_criterion,epoch)
-	    save_checkpoint(modelD,epoch,prefix='D')
-	    save_checkpoint(modelG,epoch,prefix='G')
+	    save_checkpoint(model_D,epoch,prefix='D')
+	    save_checkpoint(model_G,epoch,prefix='G')
 	    loss_list.append(current_loss)
 	    save_plot(loss_list)
 
