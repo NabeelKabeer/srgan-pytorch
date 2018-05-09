@@ -66,14 +66,12 @@ class ImageFromFolder(Dataset):
 	for image in image_set:
 	    for _ in range(sample_rate):
  		sample =RandomCropFn(image)
+		sample_flip = sample.transpose(0)
 	        new_image_set.append(sample)
-		for i in range(3):
-		    sample_flip = sample.transpose(i)
-		    new_image_set.append(sample_flip)
-		    for j in range(3,5):
-		        new_image_set.append(sample.transpose(i))
-			new_image_set.append(sample_flip.transpose(i))
-
+		new_image_set.append(sample_flip)
+		for j in range(2,5):
+		    new_image_set.append(sample.transpose(j))
+		    new_image_set.append(sample_flip.transpose(j))
 
 	return new_image_set
 
