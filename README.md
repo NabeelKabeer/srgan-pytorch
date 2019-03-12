@@ -1,4 +1,4 @@
-# SRGAN -PyTorch
+# SRGAN - PyTorch
 
 A PyTorch implementation of SRGAN
 
@@ -9,6 +9,7 @@ Implmentation of [Photo-Realistic Single Image Super-Resolution Using a Generati
 ## Prerequisites
 
 - [Pytorch](https://pytorch.org/get-started/locally/)
+- Python 2
 
 
 ## Training
